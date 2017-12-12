@@ -45,11 +45,10 @@ export class LocationTrackerProvider {
     
      let config: BackgroundGeolocationConfig = {
       desiredAccuracy: 0, // Valores posibles [0, 10, 100, 1000]. Cuánto menor es el valor la precisión en metros obtenida por el plugin es mejor.
-      stationaryRadius: 20, // Valor en un radio (en metros) donde el plugin se activará o enviará una respuesta.
+      stationaryRadius: 1, // Valor en un radio (en metros) donde el plugin se activará o enviará una respuesta.
       distanceFilter: 10, // Valor en metros (distancia) donde el plugin se activará o enviará una respuesta.
       debug: true, // Información detallada acerca de la respuesta. Emite un sonido cada vez que detecta un nuevo registro.
-      interval: 2000
-      //stopOnTerminate: false, // Si el valor es true la tarea de background-geolocation se detendrá si la aplicación se cierra o pasa a segundo plano. Recordemos que el plugin funciona en modo background y foreground.
+      stopOnTerminate: false, // Si el valor es true la tarea de background-geolocation se detendrá si la aplicación se cierra o pasa a segundo plano. Recordemos que el plugin funciona en modo background y foreground.
     };
 
       if (this.platform.is('ios')) {
@@ -66,7 +65,7 @@ export class LocationTrackerProvider {
       }
 
       console.log(config);
-    
+
      this.backgroundGeolocation.configure(config).subscribe((location) => {
     
        console.log('BackgroundGeolocation:  ' + location.latitude + ',' + location.longitude);
@@ -87,7 +86,7 @@ export class LocationTrackerProvider {
     
      }, (err) => {
     
-       console.log(err);
+       console.log('Background location error', err);
     
      });
     
@@ -96,7 +95,9 @@ export class LocationTrackerProvider {
     
     
       // Foreground Tracking
-    
+
+
+     /*
       let options = {
         frequency: 3000,
         enableHighAccuracy: true
@@ -114,6 +115,7 @@ export class LocationTrackerProvider {
         });
       
       });
+      */
   }
 
   // Comprueba si la detección de posición está habilitada en el dispositivo. En caso contrario lanza la opción nativa para habilitarla.
@@ -150,7 +152,7 @@ export class LocationTrackerProvider {
           this.presentAlert();
       }
     });
-     if (typeof this.watch != "undefined") this.watch.unsubscribe();
+     //if (typeof this.watch != "undefined") this.watch.unsubscribe();
   }
 
   presentAlert() {
